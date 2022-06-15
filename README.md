@@ -2,7 +2,7 @@ This README describes the directory `inst/impute/` and the Stan models. Here is 
 the directory structure. 
    
 ```
-/inst/impute/
+/impute/
   |
   |-- impute_model.R
   |-- impute_model_retired.R

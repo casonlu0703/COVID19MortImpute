@@ -5,6 +5,7 @@ library(data.table)
 library(rstan)
 library(MASS)
 
+# setwd("./impute")
 # Sys.setenv("resnum" = 1)
 resnum <- as.numeric(Sys.getenv("resnum"))
 
