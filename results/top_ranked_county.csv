@@ -1,0 +1,141 @@
+"county_state","urban_rural_code","svi_num","ccvi","statistics","impute_model"
+"Gove County, KS (20063)","Noncore",9.75,9.23,"834.6","USA Facts Data"
+"Jerauld County, SD (46073)","Noncore",5.06,3.66,"745.16","USA Facts Data"
+"Dickey County, ND (38021)","Noncore",11.59,4.43,"656.81","USA Facts Data"
+"Iron County, WI (55051)","Noncore",36.02,31.39,"633.02","USA Facts Data"
+"Gregory County, SD (46053)","Noncore",28.47,18.37,"621.27","USA Facts Data"
+"Foster County, ND (38031)","Noncore",1.75,1.08,"591.9","USA Facts Data"
+"Turner County, SD (46125)","Small metro",10.8,7.26,"584.45","USA Facts Data"
+"Emporia city, VA (51595)","Noncore",95.67,98.47,"561.17","USA Facts Data"
+"Lamb County, TX (48279)","Noncore",89.75,82.17,"558.44","USA Facts Data"
+"Hamlin County, SD (46057)","Noncore",15.86,9.36,"551.59","USA Facts Data"
+"Galax city, VA (51640)","Noncore",98.38,95.99,"551.44","USA Facts Data"
+"Ness County, KS (20135)","Noncore",15,15.98,"545.45","USA Facts Data"
+"Hancock County, GA (13141)","Micropolitan",79.84,52.72,"543.93","USA Facts Data"
+"Pierce County, ND (38069)","Noncore",19.14,11.08,"528.3","USA Facts Data"
+"Faulk County, SD (46049)","Noncore",7.77,4.2,"521.97","USA Facts Data"
+"Renville County, ND (38075)","Micropolitan",2.8,2.96,"515.69","USA Facts Data"
+"Buffalo County, SD (46017)","Noncore",97.1,58.29,"509.68","USA Facts Data"
+"Grant County, SD (46051)","Noncore",5.51,11.78,"496.31","USA Facts Data"
+"Kenedy County, TX (48261)","Micropolitan",73.28,53.49,"495.05","USA Facts Data"
+"Neshoba County, MS (28099)","Noncore",96.85,95.42,"484.24","USA Facts Data"
+"Buffalo County, SD (46017)","Noncore",97.1,58.29,"1644.21
+[1091.86, 2521.67]","m1"
+"Armstrong County, TX (48011)","Medium metro",15.99,24.32,"985.76
+[553.79, 1476.58]","m1"
+"Issaquena County, MS (28055)","Noncore",95.1,69.75,"936.96
+[570.23, 1550.03]","m1"
+"Martin County, TX (48317)","Small metro",42.39,37.09,"819.44
+[477.3, 1263.91]","m1"
+"Cottle County, TX (48101)","Noncore",93.63,75.04,"786.89
+[414.23, 1331.21]","m1"
+"Benson County, ND (38005)","Noncore",84.33,50.24,"759.76
+[526.98, 1009.55]","m1"
+"Floyd County, TX (48153)","Noncore",82.99,65.55,"711.39
+[533.93, 918.59]","m1"
+"Corson County, SD (46031)","Noncore",83.95,48.14,"708.93
+[411.99, 1137.43]","m1"
+"McKinley County, NM (35031)","Micropolitan",98.89,76.41,"706.26
+[689.14, 725.7]","m1"
+"Cochran County, TX (48079)","Noncore",86.08,63.07,"705.01
+[359.56, 1182.82]","m1"
+"Dewey County, SD (46041)","Noncore",88.31,56.03,"667.96
+[377.07, 1098.33]","m1"
+"Sherman County, TX (48421)","Noncore",46.11,49,"643.93
+[337.21, 1130.61]","m1"
+"Maverick County, TX (48323)","Micropolitan",97.42,81.25,"633.89
+[602.75, 664.95]","m1"
+"Oldham County, TX (48359)","Medium metro",43.22,32.22,"623
+[197.37, 924.17]","m1"
+"Hamlin County, SD (46057)","Noncore",15.86,9.36,"607.63
+[536.18, 714.31]","m1"
+"Todd County, SD (46121)","Noncore",95.64,57.34,"605.5
+[363.25, 891.28]","m1"
+"Ziebach County, SD (46137)","Noncore",95.38,75.14,"602.05
+[359.69, 1023.63]","m1"
+"Culberson County, TX (48109)","Noncore",99.71,74.91,"600.87
+[326.72, 1029.5]","m1"
+"Dallam County, TX (48111)","Noncore",55.03,56.92,"598.59
+[372.44, 871.42]","m1"
+"Big Horn County, MT (30003)","Noncore",82.74,38.59,"597.15
+[463.38, 762.6]","m1"
+"Buffalo County, SD (46017)","Noncore",97.1,58.29,"1587.89
+[1091.86, 2415.89]","m2"
+"Armstrong County, TX (48011)","Medium metro",15.99,24.32,"941.35
+[552.9, 1483.45]","m2"
+"Issaquena County, MS (28055)","Noncore",95.1,69.75,"909.85
+[570.23, 1484.19]","m2"
+"Martin County, TX (48317)","Small metro",42.39,37.09,"772.22
+[443.22, 1209.73]","m2"
+"Cottle County, TX (48101)","Noncore",93.63,75.04,"727.1
+[414.23, 1209.16]","m2"
+"Benson County, ND (38005)","Noncore",84.33,50.24,"707.48
+[490.73, 962.11]","m2"
+"McKinley County, NM (35031)","Micropolitan",98.89,76.41,"705.43
+[687.84, 725.2]","m2"
+"Floyd County, TX (48153)","Noncore",82.99,65.55,"685.05
+[516.8, 882.3]","m2"
+"Corson County, SD (46031)","Noncore",83.95,48.14,"665.74
+[363.09, 1063.36]","m2"
+"Cochran County, TX (48079)","Noncore",86.08,63.07,"645.41
+[323.55, 1067.2]","m2"
+"Maverick County, TX (48323)","Micropolitan",97.42,81.25,"630.48
+[600.17, 663.74]","m2"
+"Dewey County, SD (46041)","Noncore",88.31,56.03,"618.79
+[363.72, 972.45]","m2"
+"Sherman County, TX (48421)","Noncore",46.11,49,"601.07
+[308.72, 1024.52]","m2"
+"Oldham County, TX (48359)","Medium metro",43.22,32.22,"600.01
+[197.37, 924.17]","m2"
+"Hamlin County, SD (46057)","Noncore",15.86,9.36,"599.37
+[536.18, 695.69]","m2"
+"Ziebach County, SD (46137)","Noncore",95.38,75.14,"584.77
+[359.69, 958.73]","m2"
+"Big Horn County, MT (30003)","Noncore",82.74,38.59,"572.3
+[444.96, 728.05]","m2"
+"Todd County, SD (46121)","Noncore",95.64,57.34,"570.47
+[368.89, 836.02]","m2"
+"Starr County, TX (48427)","Micropolitan",98.15,85.51,"568.77
+[542.09, 598.88]","m2"
+"Neshoba County, MS (28099)","Noncore",96.85,95.42,"566.21
+[514.79, 615.44]","m2"
+"Buffalo County, SD (46017)","Noncore",97.1,58.29,"1645.06
+[1091.86, 2491.16]","m3"
+"Armstrong County, TX (48011)","Medium metro",15.99,24.32,"1004
+[587.62, 1546.11]","m3"
+"Issaquena County, MS (28055)","Noncore",95.1,69.75,"938.34
+[570.23, 1577.55]","m3"
+"Martin County, TX (48317)","Small metro",42.39,37.09,"821.67
+[481.81, 1217.76]","m3"
+"Cottle County, TX (48101)","Noncore",93.63,75.04,"754.84
+[414.23, 1265.91]","m3"
+"Benson County, ND (38005)","Noncore",84.33,50.24,"734.37
+[508.46, 985]","m3"
+"McKinley County, NM (35031)","Micropolitan",98.89,76.41,"703.2
+[687.27, 723.79]","m3"
+"Floyd County, TX (48153)","Noncore",82.99,65.55,"700.48
+[525.13, 905.45]","m3"
+"Corson County, SD (46031)","Noncore",83.95,48.14,"693.87
+[404.83, 1080.41]","m3"
+"Cochran County, TX (48079)","Noncore",86.08,63.07,"681.31
+[346.35, 1121.57]","m3"
+"Dewey County, SD (46041)","Noncore",88.31,56.03,"652.22
+[377.07, 1037.73]","m3"
+"Sherman County, TX (48421)","Noncore",46.11,49,"641.06
+[323.97, 1091.95]","m3"
+"Maverick County, TX (48323)","Micropolitan",97.42,81.25,"628.78
+[598.04, 660.07]","m3"
+"Oldham County, TX (48359)","Medium metro",43.22,32.22,"614
+[197.37, 924.17]","m3"
+"Ziebach County, SD (46137)","Noncore",95.38,75.14,"611.75
+[359.69, 1059.6]","m3"
+"Hamlin County, SD (46057)","Noncore",15.86,9.36,"604.99
+[536.18, 712.96]","m3"
+"Todd County, SD (46121)","Noncore",95.64,57.34,"598.75
+[375.65, 880.88]","m3"
+"Dallam County, TX (48111)","Noncore",55.03,56.92,"592.1
+[361.15, 881.72]","m3"
+"Big Horn County, MT (30003)","Noncore",82.74,38.59,"591.33
+[459.58, 744.7]","m3"
+"Culberson County, TX (48109)","Noncore",99.71,74.91,"588.05
+[334.89, 1011.4]","m3"
