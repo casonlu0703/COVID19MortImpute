@@ -176,8 +176,8 @@ if (resnum %in% 17) {
 if (resnum %in% 18) {
   data_ls$miss_sd1 <- 5.0
   data_ls$miss_sd2 <- 20.0
-  data_ls$Nmi1 <- nrow(covid19d_cty[age_group %in% c("18-29", "30-39", "40-49")])
-  data_ls$Nmi2 <- nrow(covid19d_cty[age_group %in% c("50-64", "65-74", "75-84", "85+")])
+  data_ls$Nmi1 <- nrow(covid19d_cty[is.na(y) & age_group %in% c("18-29", "30-39", "40-49")])
+  data_ls$Nmi2 <- nrow(covid19d_cty[is.na(y) & age_group %in% c("50-64", "65-74", "75-84", "85+")])
   data_ls$Jmi1 <- which(is.na(covid19d_cty$y & covid19d_cty$age_group %in% c("18-29", "30-39", "40-49")))
   data_ls$Jmi2 <- which(is.na(covid19d_cty$y & covid19d_cty$age_group %in% c("50-64", "65-74", "75-84", "85+")))
   tmp_dt <- covid19d_cty[is.na(y)]
