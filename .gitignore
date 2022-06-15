@@ -1,0 +1,14 @@
+*.Rapp.history
+*.Rproj
+*.Rhistory
+*.RData
+*.Ruserdata
+.DS_Store
+*.Rproj.user/
+.Rproj.user
+*.docx
+impute/results/fit*.RDS
+impute/results/
+*.xlsx
+impute/*.key
+impute/*.pptx
