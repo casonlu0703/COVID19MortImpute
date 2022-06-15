@@ -1,0 +1,52 @@
+Loading required package: StanHeaders
+Loading required package: ggplot2
+rstan (Version 2.21.2, GitRev: 2e1f913d3ca3)
+For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)
+
+SAMPLING FOR MODEL 'impute_hurdle_agg_nat_prior' NOW (CHAIN 3).
+
+SAMPLING FOR MODEL 'impute_hurdle_agg_nat_prior' NOW (CHAIN 2).
+
+SAMPLING FOR MODEL 'impute_hurdle_agg_nat_prior' NOW (CHAIN 1).
+Chain 3: 
+Chain 3: Gradient evaluation took 0.26 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2600 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 2: 
+Chain 2: Gradient evaluation took 0.26 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2600 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 1: 
+Chain 1: Gradient evaluation took 0.28 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 2800 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)
+Chain 3: Iteration:   10 / 4000 [  0%]  (Warmup)
+Chain 3: Iteration:   20 / 4000 [  0%]  (Warmup)
+Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)
+Chain 3: Iteration:   30 / 4000 [  0%]  (Warmup)
+Chain 2: Iteration:   10 / 4000 [  0%]  (Warmup)
+Chain 3: Iteration:   40 / 4000 [  1%]  (Warmup)
+Chain 2: Iteration:   20 / 4000 [  0%]  (Warmup)
+Loading required package: StanHeaders
+Loading required package: ggplot2
+rstan (Version 2.21.2, GitRev: 2e1f913d3ca3)
+For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)
+
+SAMPLING FOR MODEL 'impute_hurdle_agg_nat_prior' NOW (CHAIN 1).
+
+SAMPLING FOR MODEL 'impute_hurdle_agg_nat_prior' NOW (CHAIN 3).
+
+SAMPLING FOR MODEL 'impute_hurdle_agg_nat_prior' NOW (CHAIN 2).
