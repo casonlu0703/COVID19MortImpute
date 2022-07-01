@@ -11,6 +11,8 @@ resnum <- as.numeric(Sys.getenv("resnum"))
 
 options(mc.cores = parallel::detectCores())
 
+print(getwd())
+
 # covid19d_cty <- get(load("data/covid19d_cty_old.rda"))
 # mort2020 <- get(load("data/mort2020_old.rda"))
 
@@ -53,6 +55,7 @@ sd_vec <- ifelse(mort2020$covid_19_deaths < 5, 1, mort2020$covid_19_deaths * 0.2
 sd_vec_nat <- us_mort2020$covid_19_deaths * 0.2
 iters <- 4000
 warmup <- 1000
+
 
 if (resnum == 26) {
   ## Poisson assumption
