@@ -11,8 +11,11 @@ resnum <- as.numeric(Sys.getenv("resnum"))
 
 options(mc.cores = parallel::detectCores())
 
-load("data/covid19d_cty_old.rda")
-load("data/mort2020_old.rda")
+# covid19d_cty <- get(load("data/covid19d_cty_old.rda"))
+# mort2020 <- get(load("data/mort2020_old.rda"))
+
+covid19d_cty <- get(load("data/covid19d_cty.rda"))
+mort2020 <- get(load("data/mort2020.rda"))
 
 #### Create stan model
 covid19d_cty$state_num <- as.numeric(as.factor(covid19d_cty$state))
@@ -394,5 +397,5 @@ if (resnum %in% c(25, 26)) {
   )
   print(Sys.time() - begin_time)
 }
-saveRDS(fit_hurdle, paste0("results/fit_hurdle_agg", resnum, ".RDS"))
+saveRDS(fit_hurdle, paste0("results/fit_hurdle_agg", resnum, "_new.RDS"))
 
