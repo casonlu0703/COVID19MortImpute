@@ -18,32 +18,32 @@ library(loo)
 library(ggpubr)
 
 #### Compare LOO among models 8, 15-20, 25
-vec_mod <- c(8, 15:20, 25)
-for (i in vec_mod) {
-  assign(paste0("loo", i), readRDS(paste0("inst/impute/results/loo", i,".RDS")))
-}
-
-loo_compare(loo8, loo16)
-loo_compare(loo8, loo18)
+# vec_mod <- c(8, 15:20, 25)
+# for (i in vec_mod) {
+#   assign(paste0("loo", i), readRDS(paste0("impute/results/loo", i,".RDS")))
+# }
+#
+# loo_compare(loo8, loo16)
+# loo_compare(loo8, loo18)
 
 #### Get state and national level results
 i <- 18
 
-sum_est <- readRDS(paste0("inst/impute/results/sum_estimates_hurdle_agg", i,".RDS"))
+# sum_est <- readRDS(paste0("impute/results/sum_estimates_hurdle_agg", i,".RDS"))
 
-temp <- readRDS(paste0("inst/impute/bayes_impute_agg", i,".RDS"))
+temp <- readRDS(paste0("impute/bayes_impute_agg", i,".RDS"))
 
 ix_miss <- temp$ix_miss
 ymis <- temp$ymis_draws
 
 set.seed(20210621)
 
-mort_all <- mort2020[state == "US", .(age_group, covid_19_deaths)]
+mort_all <- mort2020_old[state == "US", .(age_group, covid_19_deaths)]
 mort_usa <- mort_all[, list(covid_19_deaths = sum(covid_19_deaths))]
 
 death_dt <- mclapply(c(1:nrow(ymis)), function(x) {
-  covid19d_cty$covid_19_deaths[ix_miss] <- ymis[x, ]
-  sum_dt <- covid19d_cty[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
+  covid19d_cty_old$covid_19_deaths[ix_miss] <- ymis[x, ]
+  sum_dt <- covid19d_cty_old[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
                      by = .(fips, age_group, pop_size)]
   sum_dt[, list(sum_covid19_deaths = sum(covid_19_deaths)), by = .(age_group)][, sim := x]
 }, mc.cores = 6)
@@ -60,8 +60,8 @@ death_dt <- death_dt[, list(sum_covid19_deaths = mean(sum_covid19_deaths),
                      by = .(age_group)]
 
 death_usa_dt <- mclapply(c(1:nrow(ymis)), function(x) {
-  covid19d_cty$covid_19_deaths[ix_miss] <- ymis[x, ]
-  sum_dt <- covid19d_cty[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
+  covid19d_cty_old$covid_19_deaths[ix_miss] <- ymis[x, ]
+  sum_dt <- covid19d_cty_old[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
                          by = .(fips, age_group, pop_size)]
   sum_dt[, list(sum_covid19_deaths = sum(covid_19_deaths))][, sim := x]
 }, mc.cores = 6)
@@ -96,8 +96,8 @@ death_all <- death_all[order(age_group, variable)]
 
 ## State level distribution
 state_sum_dt_all <- mclapply(c(1:nrow(ymis)), function(x) {
-  covid19d_cty$covid_19_deaths[ix_miss] <- ymis[x, ]
-  sum_dt <- covid19d_cty[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
+  covid19d_cty_old$covid_19_deaths[ix_miss] <- ymis[x, ]
+  sum_dt <- covid19d_cty_old[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
                          by = .(state, age_group)]
   sum_dt[, simno := x]
   return(sum_dt)
@@ -162,7 +162,7 @@ g2 <- ggplot(data = state_sum_dt_long) +
         axis.title.y = element_text(size = 12),
         legend.position = "bottom")
 
-ggsave(paste0("inst/impute/results/S5 Fig - state_covid19d_dist_agg", i, ".tiff"),
+ggsave(paste0("impute/results/S5 Fig - state_covid19d_dist_agg", i, ".tiff"),
        plot = g2, device = "tiff", height = 7, width = 12,
        compression = "lzw", type = "cairo")
 
@@ -213,7 +213,7 @@ g1 <- ggplot(data = state_sum_dt) +
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         legend.position = "bottom")
-saveRDS(g1, paste0("inst/impute/results/corr_state_predicted_data", i, ".RDS"))
+saveRDS(g1, paste0("impute/results/corr_state_predicted_data", i, ".RDS"))
 
 
 ## State level statistics accuracy
@@ -236,15 +236,15 @@ added_dt <- data.table(age_group = c("", "mean of accuracy measure by state",
                                               round(mean(state_sum_dt$hit_target), 2)))
 
 death_all <- rbindlist(list(death_all, added_dt), use.name = T, fill = T)
-write.xlsx(death_all, paste0("inst/impute/results/covid19deaths_impute_age_group", i, ".xlsx"), row.names = F)
+write.xlsx(death_all, paste0("impute/results/covid19deaths_impute_age_group", i, ".xlsx"), row.names = F)
 
 
 
 
 ## National level distribution
 nat_sum_dt_all <- mclapply(c(1:nrow(ymis)), function(x) {
-  covid19d_cty$covid_19_deaths[ix_miss] <- ymis[x, ]
-  sum_dt <- covid19d_cty[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
+  covid19d_cty_old$covid_19_deaths[ix_miss] <- ymis[x, ]
+  sum_dt <- covid19d_cty_old[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
                          by = .(age_group)]
   return(sum_dt)
 }, mc.cores = 6)
@@ -267,8 +267,8 @@ nat_sum_dt_all[, list(p = mean(small)), by = .(age_group)]
 ## Calculate annual distribution of the Bayesian simulation data
 
 death_yr <- mclapply(c(1:nrow(ymis)), function(x) {
-  covid19d_cty$covid_19_deaths[ix_miss] <- ymis[x, ]
-  sum_dt <- covid19d_cty[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
+  covid19d_cty_old$covid_19_deaths[ix_miss] <- ymis[x, ]
+  sum_dt <- covid19d_cty_old[, list(covid_19_deaths = sum(covid_19_deaths, na.rm = T)),
                          by = .(fips)]
   sum_dt[, cate := ifelse(covid_19_deaths >= 10, "10+", covid_19_deaths)]
   out_dt <- sum_dt[, list(sum_N = .N), by = .(cate)]
@@ -283,9 +283,9 @@ death_yr[, list(m = round(mean(pct), 4)), by = .(cate)]
 
 
 #### Bind figures
-dt8 <- readRDS(paste0("inst/impute/results/sim_data_dt8.RDS"))
-dt16 <- readRDS(paste0("inst/impute/results/sim_data_dt16.RDS"))
-dt18 <- readRDS(paste0("inst/impute/results/sim_data_dt18.RDS"))
+dt8 <- readRDS(paste0("impute/results/sim_data_dt8.RDS"))
+dt16 <- readRDS(paste0("impute/results/sim_data_dt16.RDS"))
+dt18 <- readRDS(paste0("impute/results/sim_data_dt18.RDS"))
 
 dt <- rbindlist(list(dt8, dt16, dt18), use.names = T)
 
@@ -457,15 +457,15 @@ g2 <- ggarrange(g_tmp, g2, nrow = 2, heights = c(0.05, 0.95))
 
 g_bind <- ggarrange(g2, g1, widths = c(1, 1.2), ncol = 2)
 
-ggsave("inst/impute/results/S3 Fig - sim_data_plot all", plot = g_bind,
+ggsave("impute/results/S3 Fig - sim_data_plot all", plot = g_bind,
        device = "tiff", width = 16, height = 14,
        compression = "lzw", type = "cairo")
 
 
 
-g8 <- readRDS(paste0("inst/impute/results/corr_state_predicted_data8.RDS"))
-g16 <- readRDS(paste0("inst/impute/results/corr_state_predicted_data16.RDS"))
-g18 <- readRDS(paste0("inst/impute/results/corr_state_predicted_data18.RDS"))
+g8 <- readRDS(paste0("impute/results/corr_state_predicted_data8.RDS"))
+g16 <- readRDS(paste0("impute/results/corr_state_predicted_data16.RDS"))
+g18 <- readRDS(paste0("impute/results/corr_state_predicted_data18.RDS"))
 
 df <- data.frame(x = 0.5, y = 0.5, label = "M1")
 g_tmp <- ggplot(df) +
@@ -499,7 +499,7 @@ g18 <- ggarrange(g_tmp, g18, nrow = 2, heights = c(0.05, 0.95))
 
 
 ggarrange(g8, g16, g18, nrow = 1)
-ggsave("inst/impute/results/S4 Fig - corr_state_predicted_data.tiff",
+ggsave("impute/results/S4 Fig - corr_state_predicted_data.tiff",
        device = "tiff", width = 16, height = 5,
        compression = "lzw", type = "cairo")
 

@@ -11,8 +11,8 @@ resnum <- as.numeric(Sys.getenv("resnum"))
 
 options(mc.cores = parallel::detectCores())
 
-load("data/covid19d_cty.rda")
-load("data/mort2020.rda")
+load("data/covid19d_cty_old.rda")
+load("data/mort2020_old.rda")
 
 #### Create stan model
 covid19d_cty$state_num <- as.numeric(as.factor(covid19d_cty$state))

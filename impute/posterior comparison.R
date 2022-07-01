@@ -17,13 +17,13 @@ library(raster)
 library(loo)
 
 
-temp <- readRDS(paste0("inst/impute/bayes_impute_agg8.RDS"))
+temp <- readRDS(paste0("impute/bayes_impute_agg8.RDS"))
 ymis8 <- temp$ymis_draws
 
-temp <- readRDS(paste0("inst/impute/bayes_impute_agg16.RDS"))
+temp <- readRDS(paste0("impute/bayes_impute_agg16.RDS"))
 ymis16 <- temp$ymis_draws
 
-temp <- readRDS(paste0("inst/impute/bayes_impute_agg18.RDS"))
+temp <- readRDS(paste0("impute/bayes_impute_agg18.RDS"))
 ymis18 <- temp$ymis_draws
 
 
@@ -63,7 +63,7 @@ ggsave(paste0("inst/impute/results/dist_missing_mean.png"),
 
 ix_miss <- temp$ix_miss
 
-miss_dt <- covid19d_cty[ix_miss]
+miss_dt <- covid19d_cty_old[ix_miss]
 
 set.seed(2021)
 

@@ -12,15 +12,15 @@ dat_ls <- data(package = "COVIDYPLL")
 dat_ls <- dat_ls$results[, "Item"]
 data(list = dat_ls, package = "COVIDYPLL")
 
-covid19d_cty[, quarter := paste0("Q", quarter)]
+covid19d_cty_old[, quarter := paste0("Q", quarter)]
 
 # Calculate suppress values in each quarter
-covid19d_cty[, suppress_covid_19_deaths := ifelse(is.na(covid_19_deaths), "suppressed: 1\u20139 COVID-19 deaths",
+covid19d_cty_old[, suppress_covid_19_deaths := ifelse(is.na(covid_19_deaths), "suppressed: 1\u20139 COVID-19 deaths",
                                              ifelse(covid_19_deaths == 0, "unsuppressed: 0 COVID-19 deaths", "unsuppressed: >9 COVID-19 deaths"))]
-covid19d_cty[, suppress_covid_19_deaths := factor(suppress_covid_19_deaths,
+covid19d_cty_old[, suppress_covid_19_deaths := factor(suppress_covid_19_deaths,
                                                   levels = c("unsuppressed: 0 COVID-19 deaths", "unsuppressed: >9 COVID-19 deaths", "suppressed: 1\u20139 COVID-19 deaths"))]
 
-sum_suppress <- covid19d_cty[, list(N = .N), by = .(quarter, suppress_covid_19_deaths)]
+sum_suppress <- covid19d_cty_old[, list(N = .N), by = .(quarter, suppress_covid_19_deaths)]
 sum_suppress[, pct := round(N / sum(N) * 100, 1), by = .(quarter)]
 sum_suppress[, label := ifelse(pct < 5, NA, paste0(format(pct, nsmall = 1), "%"))]
 sum_suppress$label[sum_suppress$quarter == 1 & sum_suppress$suppress_covid_19_deaths == "unsuppressed: >9 COVID-19 deaths"] <- NA
@@ -47,7 +47,7 @@ g1 <- ggplot(data = sum_suppress, aes(x = quarter, y = pct)) +
         axis.title.y = element_text(size = 14),
         legend.position = "top")
 
-county_agg_spread <- covid19d_cty[, list(covid_19_deaths = sum(covid_19_deaths)), by = .(fips, quarter)]
+county_agg_spread <- covid19d_cty_old[, list(covid_19_deaths = sum(covid_19_deaths)), by = .(fips, quarter)]
 county_agg_spread[, dum_covid_case := ifelse(is.na(covid_19_deaths) | covid_19_deaths > 0, 1, 0)]
 sum_spread <- county_agg_spread[, list(N = sum(dum_covid_case),
                                        pct = round(mean(dum_covid_case) * 100, 1)), by = .(quarter)]
@@ -81,7 +81,7 @@ ggsave("results/pre_impute/S1 Fig-dist_supp_non_supp.tiff", height = 10, width =
 
 
 
-sum_suppress <- covid19d_cty[, list(N = .N), by = .(urban_rural_code, quarter, suppress_covid_19_deaths)]
+sum_suppress <- covid19d_cty_old[, list(N = .N), by = .(urban_rural_code, quarter, suppress_covid_19_deaths)]
 sum_suppress[, pct := round(N / sum(N) * 100, 1), by = .(urban_rural_code, quarter)]
 sum_suppress[, label := ifelse(pct < 5, NA, paste0(format(pct, nsmall = 1), "%"))]
 sum_suppress <- sum_suppress[order(quarter, suppress_covid_19_deaths)]
@@ -115,7 +115,7 @@ g1 <- ggplot(data = sum_suppress, aes(x = quarter, y = pct)) +
 
 
 # Calculate suppress values in each quarter by age group
-sum_suppress <- covid19d_cty[, list(N = .N), by = .(quarter, age_group, suppress_covid_19_deaths)]
+sum_suppress <- covid19d_cty_old[, list(N = .N), by = .(quarter, age_group, suppress_covid_19_deaths)]
 sum_suppress[, pct := round(N / sum(N) * 100, 1), by = .(quarter, age_group)]
 sum_suppress[, label := ifelse(pct < 5, NA, paste0(format(pct, nsmall = 1), "%"))]
 sum_suppress <- sum_suppress[order(quarter, suppress_covid_19_deaths)]
