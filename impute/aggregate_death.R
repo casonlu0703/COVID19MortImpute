@@ -4,7 +4,6 @@
 
 rm(list = ls())
 
-library(COVIDYPLL)
 library(ggplot2)
 library(data.table)
 library(parallel)
@@ -20,6 +19,11 @@ library(ggthemes)
 library(raster)
 library(loo)
 library(ggpubr)
+
+fs <- paste0("impute/R/", list.files("impute/R"))
+for(i in fs) {
+  source(i)
+}
 
 #### Compare LOO among models 8, 15-20, 25
 # vec_mod <- c(8, 15:20, 25)
@@ -512,7 +516,6 @@ ggsave("impute/results/S4 Fig - corr_state_predicted_data.tiff",
 
 rm(list = ls())
 
-library(COVIDYPLL)
 library(data.table)
 library(dplyr)
 library(ggplot2)
@@ -529,6 +532,10 @@ library(mapproj)
 library(ggthemes)
 library(openxlsx)
 
+fs <- paste0("impute/R/", list.files("impute/R"))
+for(i in fs) {
+  source(i)
+}
 
 death_samp <- bind_samples(impute_model = "m1")
 year_rle <- NA

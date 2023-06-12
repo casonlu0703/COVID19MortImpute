@@ -4,7 +4,6 @@
 
 rm(list = ls())
 
-library(COVIDYPLL)
 library(data.table)
 library(ggplot2)
 library(rstan)
@@ -14,6 +13,11 @@ library(brms)
 library(ggpubr)
 library(parallel)
 library(loo)
+
+fs <- paste0("impute/R/", list.files("impute/R"))
+for(i in fs) {
+  source(i)
+}
 
 i <-  8 # primary models used in the manuscript are model 8 (M1), 16 (M2), and 18 (M3)
 

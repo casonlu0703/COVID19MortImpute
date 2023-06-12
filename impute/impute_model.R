@@ -1,9 +1,17 @@
+######################################################################
+##          Codes to run each imputation model using Stan           ##
+######################################################################
+
 rm(list = ls())
 
-# library(COVIDYPLL)
 library(data.table)
 library(rstan)
 library(MASS)
+
+fs <- paste0("impute/R/", list.files("impute/R"))
+for(i in fs) {
+  source(i)
+}
 
 # setwd("./impute")
 # Sys.setenv("resnum" = 1)
@@ -400,5 +408,6 @@ if (resnum %in% c(25, 26)) {
   )
   print(Sys.time() - begin_time)
 }
-saveRDS(fit_hurdle, paste0("results/fit_hurdle_agg", resnum, "_new.RDS"))
+saveRDS(fit_hurdle, paste0("results/fit_hurdle_agg", resnum, ".RDS")) # The results from Stan are not on GitHub because the file size is too large
+
 

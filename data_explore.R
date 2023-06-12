@@ -1,10 +1,18 @@
+#############################################
+##          Raw data exploration           ##
+#############################################
+
 rm(list = ls())
 
-library(COVIDYPLL)
 library(ggplot2)
 library(data.table)
 library(viridis)
 library(ggpubr)
+
+fs <- paste0("impute/R/", list.files("impute/R"))
+for(i in fs) {
+  source(i)
+}
 
 setwd("./impute")
 
