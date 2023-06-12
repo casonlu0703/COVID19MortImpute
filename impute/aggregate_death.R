@@ -1,3 +1,7 @@
+#########################################################################################
+##          Aggregate imputed death results and generate figures and reports           ##
+#########################################################################################
+
 rm(list = ls())
 
 library(COVIDYPLL)
@@ -502,6 +506,129 @@ ggarrange(g8, g16, g18, nrow = 1)
 ggsave("impute/results/S4 Fig - corr_state_predicted_data.tiff",
        device = "tiff", width = 16, height = 5,
        compression = "lzw", type = "cairo")
+
+
+#### CDR and ASDR by US census division
+
+rm(list = ls())
+
+library(COVIDYPLL)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(openxlsx)
+library(parallel)
+library(rgdal)
+library(rgeos)
+library(viridis)
+library(grid)
+library(maptools)
+library(broom)
+library(mapproj)
+library(ggthemes)
+library(openxlsx)
+
+
+death_samp <- bind_samples(impute_model = "m1")
+year_rle <- NA
+
+## Create US census region and division: https://www2.census.gov/geo/pdfs/maps-data/maps/reference/us_regdiv.pdf
+state_nm_dt <- data.table(state = state.abb,
+                          state_name = state.name)
+nyc_ls <- list(state = c("NYC", "DC"), state_name = c("New York City", "District of Columbia"))
+state_nm_dt <- rbindlist(list(state_nm_dt, nyc_ls))
+
+state_nm_dt[, region := ifelse(state_name %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire",
+                                                 "Rhode Island", "Vermont", "New Jersey", "New York", "New York City", "Pennsylvania"), "Northeast",
+                               ifelse(state_name %in% c("Indiana", "Illinois", "Michigan", "Ohio",
+                                                        "Wisconsin", "Iowa", "Kansas", "Minnesota", "Missouri",
+                                                        "Nebraska", "North Dakota", "South Dakota"), "Midwest",
+                                      ifelse(state_name %in% c("Delaware", "District of Columbia", "Florida",
+                                                               "Georgia", "Maryland", "North Carolina", "South Carolina",
+                                                               "Virginia", "West Virginia", "Alabama", "Kentucky",
+                                                               "Mississippi", "Tennessee", "Arkansas", "Louisiana",
+                                                               "Oklahoma", "Texas"),"South",
+                                             ifelse(state_name %in% c("Arizona", "Colorado", "Idaho", "New Mexico",
+                                                                      "Montana", "Utah", "Nevada", "Wyoming",
+                                                                      "Alaska", "California", "Hawaii", "Oregon",
+                                                                      "Washington"), "West", "Other"))))]
+state_nm_dt[, region := factor(region, levels = c("Northeast", "Midwest", "South", "West"))]
+
+state_nm_dt[, division := ifelse(state_name %in% c("Connecticut", "Maine", "Massachusetts", "New Hampshire",
+                                                   "Rhode Island", "Vermont"), "Div1: New England",
+                                 ifelse(state_name %in% c("New Jersey", "New York", "New York City", "Pennsylvania"), "Div2: Middle Atlantic",
+                                        ifelse(state_name %in% c("Indiana", "Illinois", "Michigan", "Ohio", "Wisconsin"), "Div3: East North Central",
+                                               ifelse(state_name %in% c("Iowa", "Kansas", "Minnesota", "Missouri",
+                                                                        "Nebraska", "North Dakota", "South Dakota"), "Div4: West North Central",
+                                                      ifelse(state_name %in% c("Delaware", "District of Columbia", "Florida",
+                                                                               "Georgia", "Maryland", "North Carolina", "South Carolina",
+                                                                               "Virginia", "West Virginia"), "Div5: South Atlantic",
+                                                             ifelse(state_name %in% c("Alabama", "Kentucky", "Mississippi",
+                                                                                      "Tennessee"), "Div6: East South Central",
+                                                                    ifelse(state_name %in% c("Arkansas", "Louisiana",
+                                                                                             "Oklahoma", "Texas"), "Div7: West South Central",
+                                                                           ifelse(state_name %in% c("Arizona", "Colorado", "Idaho", "New Mexico",
+                                                                                                    "Montana", "Utah", "Nevada", "Wyoming"), "Div8: Mountain",
+                                                                                  ifelse(state_name %in% c("Alaska", "California", "Hawaii", "Oregon",
+                                                                                                           "Washington"), "Div9: Pacific", "Other")))))))))]
+
+state_nm_dt[, division := factor(division, levels = c("Div1: New England", "Div2: Middle Atlantic", "Div3: East North Central",
+                                                      "Div4: West North Central", "Div5: South Atlantic", "Div6: East South Central",
+                                                      "Div7: West South Central", "Div8: Mountain", "Div9: Pacific", "Other"))]
+
+state_nm_dt[, state_name := NULL]
+
+death_samp <- merge(death_samp, state_nm_dt, by = "state", all = T)
+
+
+county_ypll <- calculate_ypll(dt = death_samp, byvar = c("fips", "region", "division"),
+                              year_rle = year_rle,
+                              age_adjusted_output = T,
+                              export_data_by_simno = F)
+
+fips_data <- unique(covid19d_cty[, .(fips, county_name, state)])
+
+data(covid19d_usafacts)
+
+county_ypll <- merge(county_ypll, covid19d_usafacts[, .(fips, usafacts_rate)],
+                     by = c("fips"), all.x = T)
+
+col <- c("usafacts_rate", "covid19_death_rate_mean", "covid19_death_rate_aa_mean")
+
+cty_m <- county_ypll[, lapply(.SD, mean), by = c("region", "division"), .SDcols = col][order(division)]
+cty_m[, (col) := lapply(.SD, round), .SDcols = col]
+
+cty_lb <- county_ypll[, lapply(.SD, quantile, prob = 0.25), by = c("division"), .SDcols = col]
+cty_lb[, (col) := lapply(.SD, round), .SDcols = col]
+setnames(cty_lb, col, paste0(col, "_lb"))
+
+cty_ub <- county_ypll[, lapply(.SD, quantile, prob = 0.75), by = c("division"), .SDcols = col]
+cty_ub[, (col) := lapply(.SD, round), .SDcols = col]
+setnames(cty_ub, col, paste0(col, "_ub"))
+
+cty_ci <- merge(cty_lb, cty_ub, by= "division", all = T)
+cty_ci[, `:=` (usafacts_ci = paste0("[", usafacts_rate_lb, ", ", usafacts_rate_ub, "]"),
+               covid19_death_rate_ci = paste0("[", covid19_death_rate_mean_lb, ", ", covid19_death_rate_mean_ub, "]"),
+               covid19_death_rate_aa_ci = paste0("[", covid19_death_rate_aa_mean_lb, ", ", covid19_death_rate_aa_mean_ub, "]") )]
+
+cty_ci <- cty_ci[, .(division, usafacts_ci, covid19_death_rate_ci, covid19_death_rate_aa_ci)]
+
+cty_m <- merge(cty_m, cty_ci, by = "division")
+cty_m <- cty_m[order(-usafacts_rate)][, CDR_usafacts_rank := c(1:.N)]
+cty_m <- cty_m[order(-covid19_death_rate_mean)][, CDR_impute_rank := c(1:.N)]
+cty_m <- cty_m[order(-covid19_death_rate_aa_mean)][, ASDR_impute_rank := c(1:.N)]
+
+cty_m[, `:=` (CDR_usafacts = paste0(usafacts_rate, "\n", usafacts_ci),
+              CDR_impute = paste0(covid19_death_rate_mean, "\n", covid19_death_rate_ci),
+              ASDR_impute = paste0(covid19_death_rate_aa_mean, "\n", covid19_death_rate_aa_ci))]
+
+col_order <- c("region", "division", "CDR_usafacts", "CDR_usafacts_rank",
+               "CDR_impute", "CDR_impute_rank", "ASDR_impute", "ASDR_impute_rank")
+cty_m <- cty_m[, ..col_order]
+cty_m <- cty_m[order(division)]
+
+write.xlsx(cty_m, "impute/results/rate by region and division.xlsx")
 
 
 

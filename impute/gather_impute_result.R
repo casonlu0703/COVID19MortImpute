@@ -1,3 +1,7 @@
+##########################################################################
+##          Diagnostics for imputation results and shape data           ##
+##########################################################################
+
 rm(list = ls())
 
 library(COVIDYPLL)
@@ -13,7 +17,7 @@ library(loo)
 
 i <-  8 # primary models used in the manuscript are model 8 (M1), 16 (M2), and 18 (M3)
 
-fit_hurdle <- readRDS(paste0("inst/impute/results/fit_hurdle_agg", i,".RDS"))
+fit_hurdle <- readRDS(paste0("impute/results/fit_hurdle_agg", i,".RDS"))
 ix <- c(1:nrow(covid19d_cty))
 ll <- extract_log_lik(fit_hurdle, "log_lik")
 rm(fit_hurdle)
@@ -21,13 +25,13 @@ ll <- ll[, ix[!ix %in% impute_sample$ix_miss]]
 
 loo_1 <- loo(ll, cores = 4)
 # print(loo_1)
-saveRDS(loo_1, paste0("inst/impute/results/loo", i,".RDS"))
+saveRDS(loo_1, paste0("impute/results/loo", i,".RDS"))
 
 rm(list = ls())
 
 i <- 8
 
-loo_out <- readRDS(paste0("inst/impute/results/loo", i,".RDS"))
+loo_out <- readRDS(paste0("impute/results/loo", i,".RDS"))
 print(loo_out)
 
 ix_outlier <- which(loo_out$diagnostics$pareto_k > 0.7)
@@ -44,7 +48,7 @@ table(outlier_dt$urban_rural_code)
 table(outlier_dt$quarter)
 table(outlier_dt$quarter, outlier_dt$urban_rural_code)
 
-write.csv(outlier_dt, paste0("inst/impute/results/outlier from loo ", i,".csv"), row.names = F)
+write.csv(outlier_dt, paste0("impute/results/outlier from loo ", i,".csv"), row.names = F)
 
 
 rm(list = ls())
@@ -59,20 +63,20 @@ if (i %in% c(3:5, 7:26)) {
   warmup <- 1000 + 1
 }
 
-fit_hurdle <- readRDS(paste0("inst/impute/results/fit_hurdle_agg", i,".RDS"))
+fit_hurdle <- readRDS(paste0("impute/results/fit_hurdle_agg", i,".RDS"))
 
 
 g_stan_dig <- stan_diag(fit_hurdle)
 ggarrange(g_stan_dig[[1]], g_stan_dig[[2]], g_stan_dig[[3]], nrow = 3)
-ggsave(paste0("inst/impute/results/stan_diag", i,".png"),
+ggsave(paste0("impute/results/stan_diag", i,".png"),
        device = "png", height = 10, width = 10)
 
 pars <- c("bQ", "shape", "b_hu")
 sum_estimates <- round(summary(fit_hurdle, pars = pars, probs = c(0.025, 0.975))$summary, 3)
-saveRDS(sum_estimates, paste0("inst/impute/results/sum_estimates_hurdle_agg", i,".RDS"))
+saveRDS(sum_estimates, paste0("impute/results/sum_estimates_hurdle_agg", i,".RDS"))
 
 traceplot(fit_hurdle, pars = pars)
-ggsave(paste0("inst/impute/results/traceplot of fixed effects_hurdle_agg", i,".png"), device = "png",
+ggsave(paste0("impute/results/traceplot of fixed effects_hurdle_agg", i,".png"), device = "png",
        height = 12, width = 14)
 
 
@@ -92,7 +96,7 @@ pct_neff_ratio <- sum(fit_summary[,5] / iter < 0.001, na.rm = T)
 
 diag_stats <- data.frame(diag_stats = c("Max Rhat", "Pct Ratio of N Eff to Sample Size <0.001"),
                          value = c(max_R_hat, pct_neff_ratio))
-write.csv(diag_stats, paste0("inst/impute/results/diag_stats", i,".csv"), row.names = F)
+write.csv(diag_stats, paste0("impute/results/diag_stats", i,".csv"), row.names = F)
 
 
 #### Sample data
@@ -117,7 +121,7 @@ ix_miss <- which(is.na(covid19d_cty$covid_19_deaths))
 
 saveRDS(list(ix_miss = ix_miss,
              ymis_draws = ymis_draws),
-        paste0("inst/impute/bayes_impute_agg", i,".RDS"))
+        paste0("impute/bayes_impute_agg", i,".RDS"))
 
 
 # Calculate 95% credible intervals for the proportion of counties with 1-9 COVID-19 deaths
@@ -189,7 +193,7 @@ g2 <- ggplot(data = covid19deaths_sum[y_cate != "0"]) +
         axis.title.y = element_text(size = 14),
         legend.position = "bottom")
 ggarrange(g1, g2, nrow = 2, common.legend = T)
-ggsave(paste0("inst/impute/results/impute distribution_hurdle_agg", i,".tiff"),
+ggsave(paste0("impute/results/impute distribution_hurdle_agg", i,".tiff"),
        device = "tiff", height = 12, width = 12, compression = "lzw", type = "cairo")
 
 
@@ -250,7 +254,7 @@ g2 <- ggplot(data = covid19deaths_sum[y_cate != "0"]) +
         axis.title.y = element_text(size = 20),
         legend.position = "bottom")
 
-ggsave(paste0("inst/impute/results/impute distribution_age_hurdle_agg", i,".tiff"),
+ggsave(paste0("impute/results/impute distribution_age_hurdle_agg", i,".tiff"),
        plot = g2, device = "tiff", height = 10, width = 22, dpi = 300,
        units="in", compression = "lzw+p", type = "cairo")
 
@@ -321,7 +325,7 @@ for (x in rucc_ls) {
           axis.title.x = element_text(size = 20),
           axis.title.y = element_text(size = 20),
           legend.position = "bottom")
-  ggsave(paste0("inst/impute/results/impute distribution_hurdle_agg", i,"(", x, ").png"),
+  ggsave(paste0("impute/results/impute distribution_hurdle_agg", i,"(", x, ").png"),
          plot = g2, device = "png", height = 10, width = 22, dpi = 300)
 }
 
@@ -392,7 +396,7 @@ covid19deaths_sum[, label := scales::percent(pct, accuracy = 2)]
 covid19deaths_sum[, model := ifelse(i == 8, "M1",
                                     ifelse( i == 16, "M2",
                                             ifelse(i == 18, "M3", "NA")))]
-saveRDS(covid19deaths_sum, paste0("inst/impute/results/sim_data_dt", i, ".RDS"))
+saveRDS(covid19deaths_sum, paste0("impute/results/sim_data_dt", i, ".RDS"))
 
 g2 <- ggplot(data = covid19deaths_sum[y_cate != "0"]) +
   geom_bar(aes(x = y_cate, y = pct, fill = type),
@@ -414,7 +418,7 @@ g2 <- ggplot(data = covid19deaths_sum[y_cate != "0"]) +
         axis.title.x = element_text(size = 20),
         axis.title.y = element_text(size = 20),
         legend.position = "bottom")
-# ggsave(paste0("inst/impute/results/distribution simulated and data_hurdle_agg", i,".png"),
+# ggsave(paste0("impute/results/distribution simulated and data_hurdle_agg", i,".png"),
 #        device = "png", height = 10, width = 18)
 
 
@@ -440,15 +444,15 @@ g1 <- ggplot(data = covid19deaths_sum[y_cate == "0"]) +
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 20),
         legend.position = "bottom")
-# ggsave(paste0("inst/impute/results/distribution simulated and data prop zeros_hurdle_agg", i,".png"),
+# ggsave(paste0("impute/results/distribution simulated and data prop zeros_hurdle_agg", i,".png"),
 #        device = "png", height = 8, width = 10)
 
 g3 <- ggarrange(g1, g2, nrow = 2, common.legend = T, legend = "bottom", heights = c(1, 1.1))
-saveRDS(g3, paste0("inst/impute/results/sim_data_plot", i, ".RDS"))
+saveRDS(g3, paste0("impute/results/sim_data_plot", i, ".RDS"))
 
-# ggsave(paste0("inst/impute/results/distribution simulated and data prop hurdle_agg", i,".png"),
+# ggsave(paste0("impute/results/distribution simulated and data prop hurdle_agg", i,".png"),
 #        plot = g3, device = "png", height = 16, width = 14)
-# ggsave(paste0("inst/impute/results/distribution simulated and data prop hurdle_agg", i,".tiff"),
+# ggsave(paste0("impute/results/distribution simulated and data prop hurdle_agg", i,".tiff"),
 #        plot = g3, device = "tiff", height = 16, width = 14, dpi = 300,
 #        units="in", compression = "lzw+p", type = "cairo")
 
@@ -514,12 +518,8 @@ for (j in unique(covid19d_cty$urban_rural_code)) {
           axis.title.x = element_text(size = 14),
           axis.title.y = element_text(size = 14),
           legend.position = "bottom")
-  save_file <- paste0("inst/impute/results/distribution simulated and data hurdle_agg", i,"(", j, ").png")
+  save_file <- paste0("impute/results/distribution simulated and data hurdle_agg", i,"(", j, ").png")
   ggsave(save_file, device = "png", height = 10, width = 18)
 }
-
-
-
-
 
 

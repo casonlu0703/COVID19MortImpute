@@ -105,7 +105,7 @@ data_ls$n_nat_d <- nrow(us_mort2020)
 data_ls$n_gp_nat <- nrow(us_mort2020)
 data_ls$gp_nat_ix <- covid19d_cty$age_num
 
-if (resnum %in% 8) {
+if (resnum %in% 8) { # M1 in the manuscript
   begin_time <- Sys.time()
   fit_hurdle <- stan(
     file = "stan/impute_hurdle_agg_nat.stan",  # Stan program
@@ -137,7 +137,7 @@ if (resnum %in% 15) {
   )
   print(Sys.time() - begin_time)
 }
-if (resnum %in% 16) {
+if (resnum %in% 16) { # M2 in the manuscript
   data_ls$miss_sd <- 10.0
 
   begin_time <- Sys.time()
@@ -179,7 +179,7 @@ if (resnum %in% 17) {
   )
   print(Sys.time() - begin_time)
 }
-if (resnum %in% 18) {
+if (resnum %in% 18) { # M3 in the manuscript
   data_ls$miss_sd1 <- 5.0
   data_ls$miss_sd2 <- 20.0
   data_ls$Nmi1 <- nrow(covid19d_cty[is.na(y) & age_group %in% c("18-29", "30-39", "40-49")])
