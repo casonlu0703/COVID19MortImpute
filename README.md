@@ -1,5 +1,4 @@
-This README describes the directory `impute/` and the Stan models. Here is the outline of 
-the directory structure. 
+This README describes the `R` scripts used to impute county-level age-specific provisional COVID-19 deaths in 2020. 
 
 
 
